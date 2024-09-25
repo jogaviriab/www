@@ -43,14 +43,14 @@ include "../includes/header.php";
         <!-- Consultar la lista de escuderías y desplegarlas -->
         <div class="mb-3">
             <label for="escuderia" class="form-label">Escudería</label>
-            <select name="escuderia" id="escuderia" class="form-select">
+            <select name="escuderia" id="escuderia" class="form-select" required>
                 
                 <!-- Option por defecto -->
                 <option value="" selected disabled hidden></option>
 
                 <?php
                 // Importar el código del otro archivo
-                require("../empresa/empresa_select.php");
+                require("../escuderia/escuderia_select.php");
                 
                 // Verificar si llegan datos
                 if($resultadoEscuderia):
@@ -60,7 +60,7 @@ include "../includes/header.php";
                 ?>
 
                 <!-- Opción que se genera -->
-                <option value="<?= $fila["codigo"]; ?>"><?= $fila["nombre"]; ?></option>
+                <option value="<?= $fila["codigo"]; ?>"><?= $fila["codigo"]; ?> - <?= $fila["nombre"]; ?></option>
 
                 <?php
                         // Cerrar los estructuras de control

@@ -28,14 +28,14 @@ include "../includes/header.php";
         <!-- Consultar la lista de pilotos y desplegarlos -->
         <div class="mb-3">
             <label for="realizadaPor" class="form-label">Piloto Realizador de la Prueba</label>
-            <select name="realizadaPor" id="realizadaPor" class="form-select">
+            <select name="realizadaPor" id="realizadaPor" class="form-select" required>
                 
                 <!-- Option por defecto -->
                 <option value="" selected disabled hidden></option>
 
                 <?php
                 // Importar el código del otro archivo
-                require("../cliente/cliente_select.php");
+                require("../piloto/piloto_select.php");
                 
                 // Verificar si llegan datos
                 if($resultadoPiloto):
@@ -65,7 +65,7 @@ include "../includes/header.php";
 
                 <?php
                 // Importar el código del otro archivo
-                require("../cliente/cliente_select.php");
+                require("../piloto/piloto_select.php");
                 
                 // Verificar si llegan datos
                 if($resultadoPiloto):
@@ -111,6 +111,8 @@ if($resultadoPrueba and $resultadoPrueba->num_rows > 0):
                 <th scope="col" class="text-center">Código</th>
                 <th scope="col" class="text-center">Fecha</th>
                 <th scope="col" class="text-center">Distancia</th>
+                <th scope="col" class="text-center">Realizada Por</th>
+                <th scope="col" class="text-center">Analizada Por</th>
                 <th scope="col" class="text-center">Acciones</th>
             </tr>
         </thead>
@@ -127,7 +129,9 @@ if($resultadoPrueba and $resultadoPrueba->num_rows > 0):
                 <!-- Cada una de las columnas, con su valor correspondiente -->
                 <td class="text-center"><?= $fila["codigo"]; ?></td>
                 <td class="text-center"><?= $fila["fecha"]; ?></td>
-                <td class="text-center">$<?= $fila["distancia"]; ?></td>
+                <td class="text-center"><?= $fila["distancia"]; ?> km</td>
+                <td class="text-center"><?= $fila["realizadaPor"]; ?></td>
+                <td class="text-center"><?= $fila["analizadaPor"]; ?></td>
                 
                 <!-- Botón de eliminar. Debe de incluir la CP de la entidad para identificarla -->
                 <td class="text-center">

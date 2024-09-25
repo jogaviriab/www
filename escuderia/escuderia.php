@@ -92,6 +92,7 @@ if($resultadoEscuderia and $resultadoEscuderia->num_rows > 0):
                 <th scope="col" class="text-center">País de Origen</th>
                 <th scope="col" class="text-center">Sede</th>
                 <th scope="col" class="text-center">Presupuesto Anual</th>
+                <th scope="col" class="text-center">Motorista</th>
                 <th scope="col" class="text-center">Acciones</th>
             </tr>
         </thead>
@@ -111,6 +112,7 @@ if($resultadoEscuderia and $resultadoEscuderia->num_rows > 0):
                 <td class="text-center"><?= $fila["paisOrigen"]; ?></td>
                 <td class="text-center"><?= $fila["sede"]; ?></td>
                 <td class="text-center">$<?= $fila["presupuestoAnual"]; ?></td>
+                <td class="text-center"><?= $fila["motorista"]; ?></td>
                 
                 <!-- Botón de eliminar. Debe de incluir la CP de la entidad para identificarla -->
                 <td class="text-center">
