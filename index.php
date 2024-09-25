@@ -28,14 +28,14 @@
     <div class="integrantes">
         <h2>Integrantes</h2>
         <ul>
-            <li>Integrante 1</li>
-            <li>Integrante 2</li>
-            <li>Integrante 3</li>
+            <li>Leonard David Vivas Dallos</li>
+            <li>Tomás Escobar Rivera</li>
+            <li>Jorge Humberto Gaviria Botero</li>
         </ul>
     </div>
 
     <div class="modelo">
-        <h2>Modelo E-R (Lo pueden eliminar o poner su modelo análogo)</h2>
+        <h2>Modelo E-R</h2>
         <p></p>
         <img src="modelo.png">
     </div>
