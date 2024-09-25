@@ -8,7 +8,7 @@ include "../includes/header.php";
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
 <div class="formulario p-4 m-3 border rounded-3">
 
-    <form action="cliente_insert.php" method="post" class="form-group">
+    <form action="piloto_insert.php" method="post" class="form-group">
 
         <div class="mb-3">
             <label for="numPiloto" class="form-label">Número del Piloto</label>
@@ -83,7 +83,7 @@ include "../includes/header.php";
 
 <?php
 // Importar el código del otro archivo
-require("cliente_select.php");
+require("piloto_select.php");
 
 // Verificar si llegan datos
 if($resultadoPiloto and $resultadoPiloto->num_rows > 0):
@@ -130,7 +130,7 @@ if($resultadoPiloto and $resultadoPiloto->num_rows > 0):
                 
                 <!-- Botón de eliminar. Debe de incluir la CP de la entidad para identificarla -->
                 <td class="text-center">
-                    <form action="cliente_delete.php" method="post">
+                    <form action="piloto_delete.php" method="post">
                         <input hidden type="text" name="numPilotoEliminar" value="<?= $fila["numPiloto"]; ?>">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>

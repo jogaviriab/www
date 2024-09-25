@@ -7,14 +7,14 @@ require('../config/conexion.php');
 $codigoEliminar = $_POST["codigoEliminar"];
 
 // Query SQL a la BD
-$query = "DELETE FROM escuderia WHERE codigo = '$codigoEliminar'";
+$query = "DELETE FROM prueba WHERE codigo = '$codigoEliminar'";
 
 // Ejecutar consulta
 $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
 if($result): 
     // Si fue exitosa, redirigirse de nuevo a la página de la entidad
-    header ("Location: empresa.php");
+    header ("Location: prueba.php");
 else:
     echo "Ha ocurrido un error al eliminar este registro";
 endif;

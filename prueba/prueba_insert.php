@@ -22,7 +22,7 @@ if ($realizadaPor !== $analizadaPor) {
     // Redirigir al usuario a la misma página
     if ($result) {
         // Si fue exitosa, redirigirse de nuevo a la página de la entidad
-        header("Location: proyecto.php");
+        header("Location: prueba.php");
     } else {
         echo "Ha ocurrido un error al crear la prueba.";
     }

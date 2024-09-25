@@ -22,7 +22,7 @@ $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
 // Redirigir al usuario a la misma pagina
 if($result):
     // Si fue exitosa, redirigirse de nuevo a la página de la entidad
-	header("Location: cliente.php");
+	header("Location: piloto.php");
 else:
 	echo "Ha ocurrido un error al crear el piloto";
 endif;
