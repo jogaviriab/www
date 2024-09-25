@@ -15,7 +15,7 @@ CREATE TABLE piloto (
   estiloCond VARCHAR(11) NOT NULL CHECK (estiloCond IN ('Agresivo', 'Conservador')),
   alias VARCHAR(20) NOT NULL,
   escuderia NUMBER(10) NOT NULL REFERENCES escuderia,
-  salario NUMBER(100) CHECK (salario > 0)
+  salario NUMBER(100) NOT NULL CHECK (salario > 0)
 );
 
 
