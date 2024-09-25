@@ -3,7 +3,7 @@ include "../includes/header.php";
 ?>
 
 <!-- TÍTULO. Cambiarlo, pero dejar especificada la analogía -->
-<h1 class="mt-3">Entidad análoga a EMPRESA (NOMBRE)</h1>
+<h1 class="mt-3">Entidad análoga a DEPARTAMENTO (ESCUDERÍA)</h1>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
 <div class="formulario p-4 m-3 border rounded-3">
@@ -11,8 +11,8 @@ include "../includes/header.php";
     <form action="empresa_insert.php" method="post" class="form-group">
 
         <div class="mb-3">
-            <label for="nit" class="form-label">NIT</label>
-            <input type="number" class="form-control" id="nit" name="nit" required>
+            <label for="codigo" class="form-label">Código</label>
+            <input type="number" class="form-control" id="codigo" name="codigo" required>
         </div>
 
         <div class="mb-3">
@@ -21,31 +21,41 @@ include "../includes/header.php";
         </div>
 
         <div class="mb-3">
-            <label for="presupuesto" class="form-label">Presupuesto</label>
-            <input type="number" class="form-control" id="presupuesto" name="presupuesto" required>
+            <label for="paisOrigen" class="form-label">País de Origen</label>
+            <input type="text" class="form-control" id="paisOrigen" name="paisOrigen" required>
         </div>
-        
-        <!-- Consultar la lista de clientes y desplegarlos -->
+
         <div class="mb-3">
-            <label for="cliente" class="form-label">Cliente</label>
-            <select name="cliente" id="cliente" class="form-select">
+            <label for="sede" class="form-label">Sede</label>
+            <input type="text" class="form-control" id="sede" name="sede" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="presupuestoAnual" class="form-label">Presupuesto Anual</label>
+            <input type="number" class="form-control" id="presupuestoAnual" name="presupuestoAnual" required>
+        </div>
+
+        <!-- Consultar la lista de escuderías y desplegarlos -->
+        <div class="mb-3">
+            <label for="motorista" class="form-label">Motorista</label>
+            <select name="motorista" id="motorista" class="form-select">
                 
                 <!-- Option por defecto -->
                 <option value="" selected disabled hidden></option>
 
                 <?php
                 // Importar el código del otro archivo
-                require("../cliente/cliente_select.php");
+                require("../empresa/empresa_select.php");
                 
                 // Verificar si llegan datos
-                if($resultadoCliente):
+                if($resultadoEscuderia):
                     
                     // Iterar sobre los registros que llegaron
-                    foreach ($resultadoCliente as $fila):
+                    foreach ($resultadoEscuderia as $fila):
                 ?>
 
                 <!-- Opción que se genera -->
-                <option value="<?= $fila["cedula"]; ?>"><?= $fila["nombre"]; ?> - C.C. <?= $fila["cedula"]; ?></option>
+                <option value="<?= $fila["codigo"]; ?>"><?= $fila["nombre"]; ?></option>
 
                 <?php
                         // Cerrar los estructuras de control
@@ -66,7 +76,7 @@ include "../includes/header.php";
 require("empresa_select.php");
 
 // Verificar si llegan datos
-if($resultadoEmpresa and $resultadoEmpresa->num_rows > 0):
+if($resultadoEscuderia and $resultadoEscuderia->num_rows > 0):
 ?>
 
 <!-- MOSTRAR LA TABLA. Cambiar las cabeceras -->
@@ -77,10 +87,11 @@ if($resultadoEmpresa and $resultadoEmpresa->num_rows > 0):
         <!-- Títulos de la tabla, cambiarlos -->
         <thead class="table-dark">
             <tr>
-                <th scope="col" class="text-center">NIT</th>
+                <th scope="col" class="text-center">Código</th>
                 <th scope="col" class="text-center">Nombre</th>
-                <th scope="col" class="text-center">Presupuesto</th>
-                <th scope="col" class="text-center">Cliente</th>
+                <th scope="col" class="text-center">País de Origen</th>
+                <th scope="col" class="text-center">Sede</th>
+                <th scope="col" class="text-center">Presupuesto Anual</th>
                 <th scope="col" class="text-center">Acciones</th>
             </tr>
         </thead>
@@ -89,21 +100,22 @@ if($resultadoEmpresa and $resultadoEmpresa->num_rows > 0):
 
             <?php
             // Iterar sobre los registros que llegaron
-            foreach ($resultadoEmpresa as $fila):
+            foreach ($resultadoEscuderia as $fila):
             ?>
 
             <!-- Fila que se generará -->
             <tr>
                 <!-- Cada una de las columnas, con su valor correspondiente -->
-                <td class="text-center"><?= $fila["nit"]; ?></td>
+                <td class="text-center"><?= $fila["codigo"]; ?></td>
                 <td class="text-center"><?= $fila["nombre"]; ?></td>
-                <td class="text-center">$<?= $fila["presupuesto"]; ?></td>
-                <td class="text-center">C.C. <?= $fila["cliente"]; ?></td>
+                <td class="text-center"><?= $fila["paisOrigen"]; ?></td>
+                <td class="text-center"><?= $fila["sede"]; ?></td>
+                <td class="text-center">$<?= $fila["presupuestoAnual"]; ?></td>
                 
                 <!-- Botón de eliminar. Debe de incluir la CP de la entidad para identificarla -->
                 <td class="text-center">
                     <form action="empresa_delete.php" method="post">
-                        <input hidden type="text" name="nitEliminar" value="<?= $fila["nit"]; ?>">
+                        <input hidden type="text" name="nitEliminar" value="<?= $fila["codigo"]; ?>">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </td>

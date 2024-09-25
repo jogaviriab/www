@@ -4,9 +4,9 @@
 require('../config/conexion.php');
 
 // Query SQL a la BD
-$query = "SELECT * FROM proyecto";
+$query = "SELECT * FROM prueba";
 
 // Ejecutar la consulta
-$resultadoProyecto = mysqli_query($conn, $query) or die(mysqli_error($conn));
+$resultadoPrueba = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
 mysqli_close($conn);

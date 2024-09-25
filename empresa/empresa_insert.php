@@ -4,13 +4,15 @@
 require('../config/conexion.php');
 
 // Sacar los datos del formulario. Cada input se identifica con su "name"
-$nit = $_POST["nit"];
+$codigo = $_POST["codigo"];
 $nombre = $_POST["nombre"];
-$presupuesto = $_POST["presupuesto"];
-$cliente = $_POST["cliente"];
+$paisOrigen = $_POST["paisOrigen"];
+$sede = $_POST["sede"];
+$presupuestoAnual = $_POST["presupuestoAnual"];
+$motorista = $_POST["motorista"];
 
 // Query SQL a la BD. Si tienen que hacer comprobaciones, hacerlas acá (Generar una query diferente para casos especiales)
-$query = "INSERT INTO `empresa`(`nit`,`nombre`, `presupuesto`, `cliente`) VALUES ('$nit', '$nombre', '$presupuesto', '$cliente')";
+$query = "INSERT INTO `escuderia`(`codigo`,`nombre`, `paisOrigen`, `sede`, `presupuestoAnual`, `motorista`) VALUES ('$codigo', '$nombre', '$paisOrigen', '$sede', '$presupuestoAnual', '$motorista')";
 
 // Ejecutar consulta
 $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
@@ -20,7 +22,7 @@ if($result):
     // Si fue exitosa, redirigirse de nuevo a la página de la entidad
 	header("Location: empresa.php");
 else:
-	echo "Ha ocurrido un error al crear la persona";
+	echo "Ha ocurrido un error al crear la escuderia";
 endif;
 
 mysqli_close($conn);

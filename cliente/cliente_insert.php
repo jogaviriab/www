@@ -4,12 +4,17 @@
 require('../config/conexion.php');
 
 // Sacar los datos del formulario. Cada input se identifica con su "name"
-$cedula = $_POST["cedula"];
+$numPiloto = $_POST["numPiloto"];
 $nombre = $_POST["nombre"];
-$celular = $_POST["celular"];
+$fechaNacimiento = $_POST["fechaNacimiento"];
+$nacionalidad = $_POST["nacionalidad"];
+$alias = $_POST["alias"];
+$estiloCond = $_POST["estiloCond"];
+$escuderia = $_POST["escuderia"];
+$salario = $_POST["salario"];
 
 // Query SQL a la BD. Si tienen que hacer comprobaciones, hacerlas acá (Generar una query diferente para casos especiales)
-$query = "INSERT INTO `cliente`(`cedula`,`nombre`, `celular`) VALUES ('$cedula', '$nombre', '$celular')";
+$query = "INSERT INTO `piloto`(`numPiloto`,`nombre`, `fechaNacimiento`, `nacionalidad`, `alias`, `estiloCond`, `escuderia`, `salario`) VALUES ('$numPiloto', '$nombre', '$fechaNacimiento', '$nacionalidad', '$alias', '$estiloCond', '$escuderia', '$salario')";
 
 // Ejecutar consulta
 $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
@@ -19,7 +24,7 @@ if($result):
     // Si fue exitosa, redirigirse de nuevo a la página de la entidad
 	header("Location: cliente.php");
 else:
-	echo "Ha ocurrido un error al crear la persona";
+	echo "Ha ocurrido un error al crear el piloto";
 endif;
 
 mysqli_close($conn);
