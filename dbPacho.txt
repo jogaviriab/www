@@ -12,11 +12,10 @@ CREATE TABLE piloto (
   nombre VARCHAR(20) NOT NULL,
   fechaNacimiento DATE NOT NULL,
   nacionalidad VARCHAR(20) NOT NULL,
-  estiloCond VARCHAR(10) NOT NULL,
+  estiloCond VARCHAR(11) NOT NULL CHECK (estiloCond IN ('Agresivo', 'Conservador')),
   alias VARCHAR(20) NOT NULL,
-  escuderia NUMBER(10),
-  salario NUMBER(100) CHECK (salario > 0),
-  FOREIGN KEY (escuderia) REFERENCES escuderia(codigo)
+  escuderia NUMBER(10) NOT NULL REFERENCES escuderia,
+  salario NUMBER(100) CHECK (salario > 0)
 );
 
 
@@ -24,38 +23,37 @@ CREATE TABLE prueba (
   codigo NUMBER(10) PRIMARY KEY,
   distancia NUMBER(50) NOT NULL,
   fecha DATE NOT NULL,
-  realizadaPor NUMBER(10),
-  analizadaPor NUMBER(10),
-  FOREIGN KEY (realizadaPor) REFERENCES piloto(numPiloto),
-  FOREIGN KEY (analizadaPor) REFERENCES piloto(numPiloto)
+  realizadaPor NUMBER(10) NOT NULL REFERENCES piloto,
+  analizadaPor NUMBER(10) REFERENCES piloto
 );
 
 CREATE TABLE campeonato (
   nombre VARCHAR(50),
-  año NUMBER(5) NOT NULL,
+  año NUMBER(5),
   premioCampeon NUMBER(100) NOT NULL,
   categoria VARCHAR(10),
-  mapa VARCHAR(10),
+  mapa VARCHAR(10) CHECK(mapa IN ('Digital', 'Impreso')),
   numRepuestos NUMBER(5),
   numAirbags NUMBER(5),
   numParadasPits NUMBER(5),
-  gamaNeumaticos VARCHAR(10),
+  gamaNeumaticos VARCHAR(10) CHECK(gamaNeumaticos IN ('Blanda', 'Media', 'Dura')),
   pesoMaxMonoplaza NUMBER(5),
   pesoMinPiloto NUMBER(5),
   PRIMARY KEY(nombre, año),
-  CHECK((categoria = 'F1' AND gamaNeumaticos IN ('Blanda', 'Media', 'Dura')  AND pesoMaxMonoplaza IS NOT NULL AND pesoMinPiloto IS NOT NULL) OR
-        (categoria = 'MotoGP' AND numAirbags IS NOT NULL AND  numParadasPits IS NOT NULL ) OR
-        (categoria = 'Rally' AND mapa IN ('Digital', 'Impreso') AND numRepuestos IS NOT NULL)
+  CHECK((categoria = 'F1' AND gamaNeumaticos IS NOT NULL  AND pesoMaxMonoplaza IS NOT NULL AND pesoMinPiloto IS NOT NULL AND mapa IS NULL AND numRepuestos IS NULL AND numAirbags IS NULL AND numParadasPits IS NULL) OR
+        (categoria = 'MotoGP' AND numAirbags IS NOT NULL AND  numParadasPits IS NOT NULL AND mapa IS NULL AND numRepuestos IS NULL AND gamaNeumaticos IS NULL AND pesoMaxMonoplaza IS NULL AND pesoMinPiloto IS NULL) OR
+        (categoria = 'Rally' AND mapa IS NOT NULL AND numRepuestos IS NOT NULL AND numAirbags IS NULL AND numParadasPits IS NULL AND gamaNeumaticos IS NULL AND pesoMaxMonoplaza IS NULL AND pesoMinPiloto IS NULL)
   )
 );
 
 CREATE TABLE carrera (
-    nombre VARCHAR(50) PRIMARY KEY,
-    fecha DATE NOT NULL,
+    nombre VARCHAR(50),
+    fecha DATE,
     circuito VARCHAR(50) NOT NULL,
-    nombreCampeonato VARCHAR(50),
-    añoCampeonato NUMBER(5),
-    FOREIGN KEY (nombreCampeonato, añoCampeonato) REFERENCES Campeonato(nombre, año),
+    nombreCampeonato VARCHAR(50) NOT NULL,
+    añoCampeonato NUMBER(5) NOT NULL,
+    FOREIGN KEY (nombreCampeonato, añoCampeonato) REFERENCES campeonato(nombre, año),
+    PRIMARY KEY(nombre, fecha),
     UNIQUE(fecha, circuito)
 );
 
@@ -64,19 +62,17 @@ CREATE TABLE resultado (
     puntosObtenidos NUMBER(5) NOT NULL,
     nombreCarrera VARCHAR(50),
     fechaCarrera DATE,
-    numPiloto NUMBER(10),
+    numPiloto NUMBER(10) REFERENCES piloto,
     PRIMARY KEY (nombreCarrera, fechaCarrera, numPiloto),
-    FOREIGN KEY (nombreCarrera, fechaCarrera) REFERENCES Carrera(nombre, fecha),
-    FOREIGN KEY (numPiloto) REFERENCES Piloto(numPiloto)
+    FOREIGN KEY (nombreCarrera, fechaCarrera) REFERENCES carrera(nombre, fecha)
 );
 
 
 CREATE TABLE registro (
-    escuderia NUMBER(10),
+    escuderia NUMBER(10) REFERENCES escuderia,
     campeonato VARCHAR(50),
     año NUMBER(5),
     PRIMARY KEY (escuderia, campeonato, año),
-    FOREIGN KEY (escuderia) REFERENCES escuderia(codigo),
     FOREIGN KEY (campeonato, año) REFERENCES campeonato(nombre, año)
 );
 
@@ -87,15 +83,13 @@ CREATE TABLE patrocinador (
 );
 
 CREATE TABLE contrato (
-    codigo INT PRIMARY KEY,
+    codigo NUMBER(10) PRIMARY KEY,
     tipo VARCHAR(50) NOT NULL,
     fechaInicio DATE NOT NULL,
     fechaFin DATE NOT NULL,
-    patrocinador VARCHAR(50),
-    escuderia NUMBER(10),
-    numPiloto NUMBER(10),
-    FOREIGN KEY (patrocinador) REFERENCES patrocinador(nombre),
-    FOREIGN KEY (escuderia) REFERENCES escuderia(codigo),
-    FOREIGN KEY (numPiloto) REFERENCES piloto(numPiloto),
-    CHECK ((escuderia IS NOT NULL AND numPiloto IS NULL) OR (escuderia IS NULL AND numPiloto IS NOT NULL))
+    patrocinador VARCHAR(50) NOT NULL REFERENCES patrocinador,
+    escuderia NUMBER(10) REFERENCES escuderia,
+    numPiloto NUMBER(10) REFERENCES piloto,
+    CHECK ((escuderia IS NOT NULL AND numPiloto IS NULL) OR (escuderia IS NULL AND numPiloto IS NOT NULL)),
+    CHECK (fechaInicio < fechaFin)
 );
