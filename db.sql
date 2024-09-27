@@ -4,7 +4,8 @@ CREATE TABLE escuderia(
   paisOrigen VARCHAR(20) NOT NULL,
   sede VARCHAR(20) NOT NULL,
   presupuestoAnual INT NOT NULL,
-  motorista INT REFERENCES escuderia(codigo)
+  motorista INT,
+  FOREIGN KEY (motorista) REFERENCES escuderia(codigo)
 );
 
 
@@ -15,8 +16,9 @@ CREATE TABLE piloto(
     nacionalidad VARCHAR(20) NOT NULL,
     estiloCond VARCHAR(11) NOT NULL CHECK (estiloCond IN ('Agresivo', 'Conservador')),
     alias VARCHAR(20) NOT NULL,
-    escuderia INT NOT NULL REFERENCES escuderia(codigo),
-    salario INT NOT NULL CHECK (salario >= 0)
+    escuderia INT NOT NULL,
+    salario INT NOT NULL CHECK (salario >= 0),
+    FOREIGN KEY (escuderia) REFERENCES escuderia(codigo)
 );
 
 
@@ -24,7 +26,8 @@ CREATE TABLE prueba (
   codigo INT PRIMARY KEY CHECK (codigo >= 0),
   distancia INT NOT NULL CHECK (distancia >= 0),
   fecha DATE NOT NULL,
-  realizadaPor INT NOT NULL REFERENCES piloto(numPiloto),
-  analizadaPor INT REFERENCES piloto(numPiloto),
-  CHECK (realizadaPor <> analizadaPor OR analizadaPor IS NULL)
+  realizadaPor INT NOT NULL,
+  analizadaPor INT,
+  FOREIGN KEY (realizadaPor) REFERENCES piloto(numPiloto),
+  FOREIGN KEY (analizadaPor) REFERENCES piloto(numPiloto)
 );

@@ -8,7 +8,7 @@ include "../includes/header.php";
 <p class="mt-3">
     Dado el número de un piloto y un rango de fechas (f1 y f2, con f2 ≥ f1).
     Se debe mostrar el total de kilometros hechos por el piloto a raíz de las
-    pruebas que él realizó dentro de ese rango de fechas, junto con el nombre del piloto.
+    pruebas que él analizó dentro de ese rango de fechas, junto con el nombre del piloto.
 </p>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
