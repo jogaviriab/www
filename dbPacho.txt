@@ -1,6 +1,6 @@
 CREATE TABLE escuderia (
   codigo NUMBER(10) PRIMARY KEY,
-  nombre VARCHAR(20) NOT NULL,
+  nombre VARCHAR(30) NOT NULL,
   paisOrigen VARCHAR(20) NOT NULL,
   sede VARCHAR(20) NOT NULL,
   presupuestoAnual NUMBER(50) NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE escuderia (
 
 CREATE TABLE piloto (
   numPiloto NUMBER(10) PRIMARY KEY,
-  nombre VARCHAR(20) NOT NULL,
+  nombre VARCHAR(30) NOT NULL,
   fechaNacimiento DATE NOT NULL,
   nacionalidad VARCHAR(20) NOT NULL,
   estiloCond VARCHAR(11) NOT NULL CHECK (estiloCond IN ('Agresivo', 'Conservador')),

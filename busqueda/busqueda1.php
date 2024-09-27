@@ -3,12 +3,12 @@ include "../includes/header.php";
 ?>
 
 <!-- TÍTULO. Cambiarlo, pero dejar especificada la analogía -->
-<h1 class="mt-3">Búsqueda 1</h1>
+<h1 class="mt-3">Búsqueda 1 - Kilometraje en Pruebas</h1>
 
 <p class="mt-3">
-    Dos fechas f1 y f2 (cada fecha con día, mes y año), f2 ≥ f1 y un número entero n,
-    n ≥ 0. Se debe mostrar la cédula y el celular de todos los clientes que han 
-    revisado exactamente n proyectos en dicho rango de fechas [f1, f2].
+    Dado el número de un piloto y un rango de fechas (f1 y f2, con f2 ≥ f1).
+    Se debe mostrar el total de kilometros hechos por el piloto a raíz de las
+    pruebas que él realizó dentro de ese rango de fechas, junto con el nombre del piloto.
 </p>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
@@ -28,8 +28,8 @@ include "../includes/header.php";
         </div>
 
         <div class="mb-3">
-            <label for="numero" class="form-label">Número</label>
-            <input type="number" class="form-control" id="numero" name="numero" required>
+            <label for="numPiloto" class="form-label">Número del Piloto</label>
+            <input type="number" class="form-control" id="numPiloto" name="numPiloto" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Buscar</button>
@@ -47,10 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
 
     $fecha1 = $_POST["fecha1"];
     $fecha2 = $_POST["fecha2"];
-    $numero = $_POST["numero"];
+    $numPiloto = $_POST["numPiloto"];
 
     // Query SQL a la BD -> Crearla acá (No está completada, cambiarla a su contexto y a su analogía)
-    $query = "SELECT cedula, celular FROM cliente";
+    $query = "SELECT nombre, total_km
+                FROM piloto
+                INNER JOIN (
+                    SELECT analizadaPor, SUM(distancia) AS total_km
+                    FROM prueba
+                    WHERE analizadaPor = '$numPiloto'
+                    AND fecha BETWEEN '$fecha1' AND '$fecha2'
+                    GROUP BY analizadaPor
+                ) AS distancia_total
+                ON piloto.numPiloto = distancia_total.analizadaPor;
+                ";
 
     // Ejecutar la consulta
     $resultadoB1 = mysqli_query($conn, $query) or die(mysqli_error($conn));
@@ -58,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
     mysqli_close($conn);
 
     // Verificar si llegan datos
-    if($resultadoB1 and $resultadoB1->num_rows > 0):
+   if($resultadoB1 and $resultadoB1->num_rows > 0):
 ?>
 
 <!-- MOSTRAR LA TABLA. Cambiar las cabeceras -->
@@ -69,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
         <!-- Títulos de la tabla, cambiarlos -->
         <thead class="table-dark">
             <tr>
-                <th scope="col" class="text-center">Cédula</th>
-                <th scope="col" class="text-center">Celular</th>
+                <th scope="col" class="text-center">Nombre Piloto</th>
+                <th scope="col" class="text-center">Kilómetros Recorridos</th>
             </tr>
         </thead>
 
@@ -84,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
             <!-- Fila que se generará -->
             <tr>
                 <!-- Cada una de las columnas, con su valor correspondiente -->
-                <td class="text-center"><?= $fila["cedula"]; ?></td>
-                <td class="text-center"><?= $fila["celular"]; ?></td>
+                <td class="text-center"><?= $fila["nombre"]; ?></td>
+                <td class="text-center"><?= $fila["total_km"]; ?></td>
             </tr>
 
             <?php
