@@ -1,5 +1,6 @@
+
 CREATE TABLE escuderia (
-  codigo NUMBER(10) PRIMARY KEY,
+  codigo NUMBER(10) PRIMARY KEY CHECK (codigo >= 0),
   nombre VARCHAR(30) NOT NULL,
   paisOrigen VARCHAR(20) NOT NULL,
   sede VARCHAR(20) NOT NULL,
@@ -7,31 +8,46 @@ CREATE TABLE escuderia (
   motorista NUMBER(10) REFERENCES escuderia
 );
 
+
 CREATE TABLE piloto (
-  numPiloto NUMBER(10) PRIMARY KEY,
+  numPiloto NUMBER(10) PRIMARY KEY CHECK (numPiloto >= 0),
   nombre VARCHAR(30) NOT NULL,
   fechaNacimiento DATE NOT NULL,
   nacionalidad VARCHAR(20) NOT NULL,
   estiloCond VARCHAR(11) NOT NULL CHECK (estiloCond IN ('Agresivo', 'Conservador')),
   alias VARCHAR(20) NOT NULL,
   escuderia NUMBER(10) NOT NULL REFERENCES escuderia,
-  salario NUMBER(100) NOT NULL CHECK (salario > 0)
+  salario NUMBER(100) NOT NULL CHECK (salario >= 0)
 );
 
 
 CREATE TABLE prueba (
-  codigo NUMBER(10) PRIMARY KEY,
-  distancia NUMBER(50) NOT NULL,
+  codigo NUMBER(10) PRIMARY KEY CHECK (codigo >= 0),
+  distancia NUMBER(50) NOT NULL (distancia >= 0),
   fecha DATE NOT NULL,
   realizadaPor NUMBER(10) NOT NULL REFERENCES piloto,
   analizadaPor NUMBER(10) REFERENCES piloto
 );
 
+
+CREATE TABLE carrera (
+    nombre VARCHAR(50),
+    fecha DATE,
+    circuito VARCHAR(50) NOT NULL,
+    nombreCampeonato VARCHAR(50) NOT NULL,
+    añoCampeonato NUMBER(5) NOT NULL,
+    FOREIGN KEY (nombreCampeonato, añoCampeonato) REFERENCES campeonato(nombre, año),
+    PRIMARY KEY(nombre, fecha),
+    UNIQUE(fecha, circuito)
+);
+
+
+
 CREATE TABLE campeonato (
   nombre VARCHAR(50),
   año NUMBER(5),
   premioCampeon NUMBER(100) NOT NULL,
-  categoria VARCHAR(10),
+  categoria VARCHAR(10) NOT NULL,
   mapa VARCHAR(10) CHECK(mapa IN ('Digital', 'Impreso')),
   numRepuestos NUMBER(5),
   numAirbags NUMBER(5),
@@ -46,16 +62,7 @@ CREATE TABLE campeonato (
   )
 );
 
-CREATE TABLE carrera (
-    nombre VARCHAR(50),
-    fecha DATE,
-    circuito VARCHAR(50) NOT NULL,
-    nombreCampeonato VARCHAR(50) NOT NULL,
-    añoCampeonato NUMBER(5) NOT NULL,
-    FOREIGN KEY (nombreCampeonato, añoCampeonato) REFERENCES campeonato(nombre, año),
-    PRIMARY KEY(nombre, fecha),
-    UNIQUE(fecha, circuito)
-);
+
 
 CREATE TABLE resultado (
     posicion NUMBER(5) NOT NULL,
@@ -76,11 +83,14 @@ CREATE TABLE registro (
     FOREIGN KEY (campeonato, año) REFERENCES campeonato(nombre, año)
 );
 
+
+
 CREATE TABLE patrocinador (
     nombre VARCHAR(50) PRIMARY KEY,
     sector VARCHAR(50) NOT NULL,
     contacto VARCHAR(50) NOT NULL
 );
+
 
 CREATE TABLE contrato (
     codigo NUMBER(10) PRIMARY KEY,
@@ -93,3 +103,4 @@ CREATE TABLE contrato (
     CHECK ((escuderia IS NOT NULL AND numPiloto IS NULL) OR (escuderia IS NULL AND numPiloto IS NOT NULL)),
     CHECK (fechaInicio < fechaFin)
 );
+
